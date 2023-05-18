@@ -1,6 +1,7 @@
-
-import re
+import os
 import os.path as osp
+import io
+import shutil
 
 from ziranma_single import init_shuruma, sort_bushou, init_ziranma_dict, get_fuma_l
 from rime_path import get_rime_userdata
@@ -9,7 +10,7 @@ input_root = osp.join(get_rime_userdata(), r'remote\rime-ice\cn_dicts')
 output_root = osp.join(get_rime_userdata(), r'cn_dicts')
 data_path = osp.join(osp.dirname(osp.abspath(__file__)), 'data')
 
-chaizi_f = open("chaizi-jt.txt", encoding='utf8').readlines()
+chaizi_f = open(osp.join(data_path, "chaizi-jt.txt"), encoding='utf8').readlines()
 chaizi_dict = {}
 for line in chaizi_f:
     splits = line.split('\t')
@@ -104,12 +105,32 @@ def transdict(inf, outf):
                 outf.write(f'{hanzi}\t{new_code}\t{gailv}\n')
             else:
                 outf.write(f'{hanzi}\t{new_code}\n')
-    outf.close()
 
 
 if __name__ == '__main__':
-    for fname in ['8105.dict.yaml', '41448.dict.yaml', 'base.dict.yaml']:
+    base_dicts = ['8105.dict.yaml', '41448.dict.yaml', 'base.dict.yaml']
+    for fname in base_dicts:
         infile = open(osp.join(input_root, fname), encoding='utf8').readlines()
-        outf = open(osp.join(output_root, fname), 'w', encoding='utf8')
+        newdataf = io.StringIO()
+        transdict(infile, newdataf)
+        newdata = newdataf.getvalue()
 
-        transdict(infile, outf)
+        with open(osp.join(output_root, fname), 'r', encoding='utf8') as outf:
+            olddata = outf.read()
+            if newdata == olddata:
+                continue
+        with open(osp.join(output_root, fname), 'w', encoding='utf8') as outf:
+            outf.write(newdata)
+
+    for fname in os.listdir(input_root):
+        if fname in base_dicts:
+            continue
+
+        with open(osp.join(output_root, fname), 'r', encoding='utf8') as oldf, \
+                open(osp.join(input_root, fname), 'r', encoding='utf8') as newf:
+            olddata = oldf.read()
+            newdata = newf.read()
+            if olddata == newdata:
+                continue
+        with open(osp.join(output_root, fname), 'w', encoding='utf8') as outf:
+            outf.write(newdata)
