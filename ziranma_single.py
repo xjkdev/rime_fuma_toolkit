@@ -1,8 +1,9 @@
 from collections import defaultdict
 import os
 import os.path as osp
+import rime_path
 
-input_root = r'C:\Users\Junkun\AppData\Roaming\Rime\remote\rime-ice\cn_dicts'
+input_root = osp.join(rime_path.get_rime_userdata(), 'remote', 'rime-ice', 'cn_dicts')
 data_path = osp.join(osp.dirname(osp.abspath(__file__)), 'data')
 # 基础码表，用于提供汉字的拼音，也可以是luna_pinyin.dict.yaml
 base_dict_file = ['8105.dict.yaml', '41448.dict.yaml']

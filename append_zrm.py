@@ -6,8 +6,8 @@ import shutil
 from ziranma_single import init_shuruma, sort_bushou, init_ziranma_dict, get_fuma_l
 from rime_path import get_rime_userdata
 
-input_root = osp.join(get_rime_userdata(), r'remote\rime-ice\cn_dicts')
-output_root = osp.join(get_rime_userdata(), r'cn_dicts')
+input_root = osp.join(get_rime_userdata(), 'remote', 'rime-ice', 'cn_dicts')
+output_root = osp.join(get_rime_userdata(), 'cn_dicts')
 data_path = osp.join(osp.dirname(osp.abspath(__file__)), 'data')
 
 chaizi_f = open(osp.join(data_path, "chaizi-jt.txt"), encoding='utf8').readlines()
