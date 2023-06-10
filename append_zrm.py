@@ -123,7 +123,7 @@ if __name__ == '__main__':
             outf.write(newdata)
 
     for fname in os.listdir(input_root):
-        if fname in base_dicts:
+        if fname in base_dicts or not fname.endswith('.yaml'):
             continue
 
         with open(osp.join(output_root, fname), 'r', encoding='utf8') as oldf, \
