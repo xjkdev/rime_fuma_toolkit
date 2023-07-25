@@ -86,7 +86,8 @@ def transdict(inf, outf):
             # hanzi_s = converter.convert(hanzi) # simplified
             pinyins = bianma.split()
             if len(hanzi_s) != len(pinyins):
-                print(line)
+                if '·' not in hanzi_s:
+                    print(line)
                 outf.write(line)
                 continue
 
